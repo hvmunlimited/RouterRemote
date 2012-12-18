@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">远程控制</string>
+    <string name="remember">记住用户名和密码</string>
+    <string name="clabel">执行命令:</string>
+    <string name="aliaslabel">别名:</string>
+    <string name="brieflabel">快速输出</string>
+    <string name="perslabel">持续输出</string>
+    <string name="inputlabel">输入要求</string>
+    <string name="remlabel">"记住你输入的命令"</string>
+    <string name="addbutton">添加数据库</string>
+    <string name="ip">IP地址</string>
+    <string name="port">端口號</string>
+    <string name="user">用戶名</string>
+    <string name="pwd">口令</string>
+    <string name="connectbutton">連接</string>
+</resources>

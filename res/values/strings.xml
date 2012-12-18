@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">RouterRemote</string>
+    <string name="remember">Remember user and password</string>
+    <string name="clabel">Command to execute:</string>
+    <string name="aliaslabel">Alias:</string>
+    <string name="brieflabel">Brief output</string>
+    <string name="perslabel">Persistent output</string>
+    <string name="inputlabel">Input required</string>
+    <string name="remlabel">"Remember to append a space for commands that require input. You can execute more than one command in a single statement by separating them with a semicolon ';' (experimental)"</string>
+    <string name="addbutton">Add to database</string>
+    <string name="ip">IP Address</string>
+    <string name="port">Port</string>
+    <string name="user">User</string>
+    <string name="pwd">Password</string>
+    <string name="connectbutton">Connect</string>
+</resources>
