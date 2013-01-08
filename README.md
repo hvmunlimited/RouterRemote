@@ -21,7 +21,7 @@ an intuitive, modern user interface to the application menu.
 
 Released under BSD license. For more info, see the bottom of this document or visit:
 
-* http://market.android.com/details?id=omtinez.routerremote
+* https://play.google.com/store/apps/details?id=omtinez.routerremote 
 
 * http://sourceforge.net/projects/routerremote
 
