@@ -29,7 +29,7 @@ Released under BSD license. For more info, see the bottom of this document or vi
 LICENSE
 -------
 
-Copyright (c) 2013, Oscar Martinez
+Copyright (c) 2013, Oscar Martinez  
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
