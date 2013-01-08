@@ -15,7 +15,9 @@ ABOUT
 With Router Remote you can connect to your router and change the configuration, 
 restart it, and many other things from your phone. Currently only Zyxel routers 
 supported, but it would possible to make it work with other routers as well. 
-Please report non-working routers, since support might be added.
+Please report non-working routers, since support might be added. It uses the 
+android library Ohmenu available at http://github.com/omtinez/ohmenu to implement 
+an intuitive, modern user interface to the application menu.
 
 Released under BSD license. For more info, see the bottom of this document or visit:
 
