@@ -1,6 +1,6 @@
 package omtinez.routerremote;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +15,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 public class LoginActivity extends SherlockActivity {
 	CommandsDB db;
 	Telnet telnet;
-	Context context;
+	Activity activity;
 	
 	int port;
 	String ip;
@@ -30,7 +30,7 @@ public class LoginActivity extends SherlockActivity {
         
         // get telnet class instance
         telnet = Telnet.getInstance();
-        context = this.getBaseContext();
+        activity = this;
         
         final EditText iptext =  (EditText)findViewById(R.id.ip);
         final EditText porttext = (EditText)findViewById(R.id.port);
@@ -68,11 +68,13 @@ public class LoginActivity extends SherlockActivity {
 					
 					// try to connect
 					new Thread() { public void run() {
-						telnet.init(context, ip, port);
+						telnet.init(activity, ip, port);
 						if(telnet.login(user, pwd)) {
 							startActivity(new Intent(LoginActivity.this, MenuActivity.class));
 						} else {
-							Toast.makeText(context, "Unable to log in", Toast.LENGTH_LONG).show();
+							activity.runOnUiThread(new Runnable() { public void run() {
+								Toast.makeText(activity.getBaseContext(), "Unable to log in", Toast.LENGTH_LONG).show();
+							}});
 						}
 					}}.start();
 				}

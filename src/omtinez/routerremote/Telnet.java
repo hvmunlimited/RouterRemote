@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class Telnet {
 	// allow instantiation
 	public Telnet() {}
 	
-    public void init(Context context, String ip, int port) {
+    public void init(final Activity activity, String ip, int port) {
     	try {
 			// socket
 			socket = new Socket(ip,port);
@@ -43,13 +44,19 @@ public class Telnet {
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			Toast.makeText(context, "Error connecting to router, unknown host exception", Toast.LENGTH_SHORT).show();
+			activity.runOnUiThread(new Runnable() { public void run() {
+				Toast.makeText(activity.getBaseContext(), "Error connecting to router, unknown host exception", Toast.LENGTH_SHORT).show();
+			}});
 		} catch (SocketException e) {
 			e.printStackTrace();
-			Toast.makeText(context, "Error connecting to router, socket exception", Toast.LENGTH_SHORT).show();
+			activity.runOnUiThread(new Runnable() { public void run() {
+				Toast.makeText(activity.getBaseContext(), "Error connecting to router, socket exception", Toast.LENGTH_SHORT).show();
+			}});
 		} catch (IOException e) {
 			e.printStackTrace();
-			Toast.makeText(context, "Error connecting to router, IO exception", Toast.LENGTH_SHORT).show();
+			activity.runOnUiThread(new Runnable() { public void run() {
+				Toast.makeText(activity.getBaseContext(), "Error connecting to router, IO exception", Toast.LENGTH_SHORT).show();
+			}});
 		}
 	}
     
