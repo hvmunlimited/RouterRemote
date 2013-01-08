@@ -8,84 +8,35 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 
-public class Telnet extends Activity {
-	CommandsDB db = null;
-	Socket socket = null;
-	BufferedReader r = null;
-	PrintWriter w = null;
+public class Telnet {
 	
-	int port = 0;
-	String user = null, pwd = null;
+	static Telnet mThis;
+	static Context mContext;
 	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        final EditText iptext =  (EditText)findViewById(R.id.ip);
-        final EditText porttext = (EditText)findViewById(R.id.port);
-        final EditText usertext =  (EditText)findViewById(R.id.user);
-        final EditText pwdtext =  (EditText)findViewById(R.id.pwd);
-        final CheckBox rembox = (CheckBox)findViewById(R.id.rembox);
-        
-        // get saved credentials
-        db = new CommandsDB(Telnet.this);
-        porttext.setText(Integer.toString(db.getPort()));
-        usertext.setText(db.getUser());
-        pwdtext.setText(db.getPwd());
-        
-        
-
-        
-        Button connectb = (Button)findViewById(R.id.connectb);
-        connectb.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				
-				// retrieve the values
-				String ip = iptext.getText().toString();
-				try {
-					port = Integer.parseInt(porttext.getText().toString().trim());
-				} catch (NumberFormatException nfe) {
-					Toast.makeText(Telnet.this, "Selecter port is not a number", Toast.LENGTH_LONG).show();
-				} finally {
-					user = usertext.getText().toString().trim();
-					pwd = pwdtext.getText().toString().trim();
-					
-					// save credentials if remember is checked
-					if (rembox.isChecked()) db.save(user,pwd,port);
-					
-					// create intent and prepare data to be passed 
-					Intent i = new Intent(Telnet.this, Actions.class);
-					i.putExtra("omtinez.Telnet.user", user);
-					i.putExtra("omtinez.Telnet.pwd", pwd);
-					i.putExtra("omtinez.Telnet.ip", ip);
-					i.putExtra("omtinez.Telnet.port", port);
-					startActivity(i);
-				}
-			}
-        });
-    }
-    
-    public Telnet() {}
-    public Telnet(Context context, String ip, int port) {
+	Socket socket;
+	BufferedReader r;
+	PrintWriter w;
+	
+	public static Telnet getInstance() {
+		if (mThis == null) {
+			mThis = new Telnet();
+		}
+		return mThis;
+	}
+	
+	// allow instantiation
+	public Telnet() {}
+	
+    public void init(Context context, String ip, int port) {
     	try {
 			// socket
 			socket = new Socket(ip,port);
 			socket.setKeepAlive(true);
 			socket.setSoTimeout(3000);
+			
 			// I/O
 			r = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			w = new PrintWriter(socket.getOutputStream(),true);
@@ -105,16 +56,22 @@ public class Telnet extends Activity {
     public boolean login(String user, String pwd) {
     	try {
 			String login1 = read(r);
-			w.print(user+"\r\n");
+			w.print(user + "\r\n");
 			w.flush();
 			String login2 = read(r);
-	    	w.print(user+"\r\n");
+	    	w.print(pwd + "\r\n");
 	    	w.flush();
 	    	String enter = read(r);
-	    	// to tell whether we logged in succesfully, compare the last 5 characters of output
-	    	if(enter.length() < 5) return true;
-	    	else if(enter.substring(enter.length()-5).matches(login1.substring(login1.length()-5)) || enter.substring(enter.length()-5).matches(login2.substring(login2.length()-5))) return false;
-	    	else return true;
+	    	
+	    	// to tell whether we logged in successfully, compare the last 5 characters of output
+	    	if (enter.length() < 5) {
+	    		return true;
+	    	} else if (enter.substring(enter.length() - 5).matches(login1.substring(login1.length()-5)) 
+	    	|| enter.substring(enter.length() - 5).matches(login2.substring(login2.length() - 5))) {
+	    		return false;
+	    	} else {
+	    		return true;
+	    	}
 	    	
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -19,7 +19,19 @@
     <LinearLayout android:layout_width="match_parent" android:orientation="vertical" android:layout_height="wrap_content" android:id="@+id/row3">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/pwdlabel" android:text="@string/pwd"></TextView>
         <EditText android:layout_height="wrap_content" android:id="@+id/pwd" android:text="1234" android:password="true" android:layout_width="match_parent" android:imeOptions="actionDone" android:inputType="text"></EditText>
-        <CheckBox android:layout_width="wrap_content" android:text="@string/remember" android:layout_height="wrap_content" android:id="@+id/rembox"></CheckBox>
+
+        <Button
+            android:id="@+id/connectb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:text="@string/connectbutton" />
+
+        <CheckBox
+            android:id="@+id/rembox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/remember" >
+</CheckBox>
     </LinearLayout>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/connectb" android:layout_marginTop="10px" android:text="@string/connectbutton"></Button>
 </LinearLayout>

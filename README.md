@@ -1,3 +1,34 @@
+
+ROUTER REMOTE
+=============
+
+* Developed by Oscar Martinez
+
+* Licensed under BSD
+
+* Last edited Jan. 08, 2013
+
+
+ABOUT
+-----
+
+With Router Remote you can connect to your router and change the configuration, 
+restart it, and many other things from your phone. Currently only Zyxel routers 
+supported, but it would possible to make it work with other routers as well. 
+Please report non-working routers, since support might be added.
+
+Released under BSD license. For more info, see the bottom of this document or visit:
+
+* http://market.android.com/details?id=omtinez.routerremote
+
+* http://sourceforge.net/projects/routerremote
+
+* http://github.com/omtinez/routerremote
+
+
+LICENSE
+-------
+
 Copyright (c) 2013, Oscar Martinez
 All rights reserved.
 
@@ -11,14 +42,14 @@ notice, this list of conditions and the following disclaimer.
 notice, this list of conditions and the following disclaimer in the
 documentation and/or other materials provided with the distribution.
     
-* Neither the name of the <organization> nor the
+* Neither the name of the copyright holder nor the
 names of its contributors may be used to endorse or promote products
 derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
 DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND

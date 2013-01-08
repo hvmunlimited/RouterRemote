@@ -12,7 +12,7 @@ public class CommandsDB extends SQLiteOpenHelper {
 	private SQLiteDatabase db;
 	
 	public CommandsDB(Context context) {
-		super(context, "router", null, 3);
+		super(context, "router", null, 4);
 		db = this.getWritableDatabase();
 	}
 
@@ -20,28 +20,28 @@ public class CommandsDB extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		this.db = db;
 		// create tables
-		db.execSQL("CREATE TABLE zyxel (" +
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, cmd TEXT, type INTEGER)");
+		db.execSQL("CREATE TABLE commands (" +
+		"id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, icon INTEGER, cmd TEXT, type INTEGER)");
 		db.execSQL("CREATE TABLE IF NOT EXISTS router (" +
 		"id INTEGER PRIMARY KEY UNIQUE, user TEXT, pwd TEXT, port INTEGER)");
 		// save default credentials
 		save("1234","1234",23);
 		// insert default actions
-		insert("zyxel", "Restart Router", "reboot",0);
-		insert("zyxel", "Refresh IP", "adsl stop;adsl start --up",0);
-		insert("zyxel", "Stop Adsl", "adsl stop",0);
-		insert("zyxel", "Stop Wifi", "wlan config status down",0);
-		insert("zyxel", "Deny MAC", "wlan config macmode 1;wlan config mac add ",2);
-		insert("zyxel", "Start Adsl", "adsl start --up",0);
-		insert("zyxel", "Start Wifi", "wlan config status up",0);
-		insert("zyxel", "Show Hosts", "lanhosts show all",1);
-		insert("zyxel", "Help", "?",1);
-		insert("zyxel", "Exit", "exit", 0);
+		insert("commands", "Restart Router", "reboot", R.drawable.restart_router, 0);
+		insert("commands", "Refresh IP", "adsl stop;adsl start --up", R.drawable.refresh_ip, 0);
+		insert("commands", "Stop Adsl", "adsl stop", R.drawable.stop_adsl, 0);
+		insert("commands", "Stop Wifi", "wlan config status down", R.drawable.stop_wifi,0);
+		insert("commands", "Deny MAC", "wlan config macmode 1;wlan config mac add ", R.drawable.deny_mac, 2);
+		insert("commands", "Start Adsl", "adsl start --up", R.drawable.start_adsl, 0);
+		insert("commands", "Start Wifi", "wlan config status up", R.drawable.start_wifi, 0);
+		insert("commands", "Show Hosts", "lanhosts show all", R.drawable.view_hosts, 1);
+		insert("commands", "Help", "?", R.drawable.help_telnet, 1);
+		insert("commands", "Exit", "exit", R.drawable.exit_telnet, 0);
 	}
 
-	public void insert(String table, String name, String cmd, int type) {
-		db.execSQL("INSERT OR REPLACE INTO " + table + " (name,cmd,type) VALUES ('" + 
-				name + "','" + cmd + "'," + type + ")");
+	public void insert(String table, String name, String cmd, int icon, int type) {
+		db.execSQL("INSERT OR REPLACE INTO " + table + " (name,cmd,icon,type) VALUES ('" + 
+				name + "','" + cmd + "'," + icon + "," + type + ")");
 	}
 	
 	public void save(String user, String pwd, int port) {
@@ -55,6 +55,7 @@ public class CommandsDB extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		this.db = db;
+		
 		// drop old tables
 		db.execSQL("DROP TABLE IF EXISTS commands");
 		db.execSQL("DROP TABLE IF EXISTS zyxel");
@@ -81,10 +82,27 @@ public class CommandsDB extends SQLiteOpenHelper {
 		return 23;
 	}
 	
-	public List<String> getActions() {
+	public List<String[]> getCommands() {
+		Cursor c = db.rawQuery("SELECT name, icon, cmd, type FROM commands", null);
+		List<String[]> actions = new ArrayList<String[]>();
+		while (c.moveToNext()) {
+			String[] res = new String[4];
+			res[0] = c.getString(0);
+			res[1] = c.getString(1);
+			res[2] = c.getString(2);
+			res[3] = c.getString(3);
+			actions.add(res);
+		}
+		return actions;
+	}
+	
+	// deprecated
+	public List<String> getCmdNames() {
 		Cursor c = db.rawQuery("SELECT name FROM zyxel", null);
 		List<String> actions = new ArrayList<String>();
-		while (c.moveToNext()) actions.add(c.getString(0));
+		while (c.moveToNext()) {
+			actions.add(c.getString(0));
+		}
 		return actions;
 	}
 	
