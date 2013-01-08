@@ -5,17 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.Toast;
 
 public class Telnet {
 	
 	static Telnet mThis;
-	static Context mContext;
 	
 	Socket socket;
 	BufferedReader r;
@@ -42,20 +38,10 @@ public class Telnet {
 			r = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			w = new PrintWriter(socket.getOutputStream(),true);
 			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			final String error_message = e.getMessage();
 			activity.runOnUiThread(new Runnable() { public void run() {
-				Toast.makeText(activity.getBaseContext(), "Error connecting to router, unknown host exception", Toast.LENGTH_SHORT).show();
-			}});
-		} catch (SocketException e) {
-			e.printStackTrace();
-			activity.runOnUiThread(new Runnable() { public void run() {
-				Toast.makeText(activity.getBaseContext(), "Error connecting to router, socket exception", Toast.LENGTH_SHORT).show();
-			}});
-		} catch (IOException e) {
-			e.printStackTrace();
-			activity.runOnUiThread(new Runnable() { public void run() {
-				Toast.makeText(activity.getBaseContext(), "Error connecting to router, IO exception", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity.getBaseContext(), error_message, Toast.LENGTH_SHORT).show();
 			}});
 		}
 	}
@@ -80,10 +66,7 @@ public class Telnet {
 	    		return true;
 	    	}
 	    	
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
