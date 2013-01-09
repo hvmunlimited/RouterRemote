@@ -2,6 +2,7 @@ package omtinez.routerremote;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,8 +23,9 @@ import com.omtinez.ohmenu.Ohmenu;
 import com.omtinez.ohmenu.OhmenuItem;
 
 public class MenuActivity extends SherlockActivity {
-	CommandsDB db = null;
-	Telnet telnet = null;
+	CommandsDB db;
+	Telnet telnet;
+	Activity activity;
 	
 	public static final int TOAST = 0;
 	public static final int ALERT_DIALOG = 1;
@@ -32,6 +34,7 @@ public class MenuActivity extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.actionsmenu);
+		activity = this;
 
 		// get telnet instance
 		telnet = Telnet.getInstance();
@@ -64,16 +67,26 @@ public class MenuActivity extends SherlockActivity {
 			items[i] = new OhmenuItem(icon, cmdname, "Tap button to perform action");
 			items[i].setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View v) {
+				public void onClick(final View v) {
 					switch(cmdtype) {
 					case TOAST:
-						Toast.makeText(v.getContext(), telnet.command(command), Toast.LENGTH_LONG).show();
+						new Thread() { public void run() {
+							final String output = telnet.command(command);
+							activity.runOnUiThread(new Runnable() { public void run() {
+								Toast.makeText(v.getContext(), output, Toast.LENGTH_LONG).show();
+							}});
+						}}.start();
 						break;
 					case ALERT_DIALOG:
-						AlertDialog alert = (new AlertDialog.Builder(v.getContext())).create();
-						alert.setMessage(telnet.command(command));
-						alert.setTitle("Output");
-						alert.show();
+						new Thread() { public void run() {
+							final String output = telnet.command(command);
+							activity.runOnUiThread(new Runnable() { public void run() {
+								AlertDialog alert = (new AlertDialog.Builder(v.getContext())).create();
+								alert.setMessage(output);
+								alert.setTitle("Output");
+								alert.show();
+							}});
+						}}.start();
 						break;
 					case INPUT_DIALOG:
 						AlertDialog alert1 = (new AlertDialog.Builder(v.getContext())).create();
@@ -85,9 +98,12 @@ public class MenuActivity extends SherlockActivity {
 						alert1.setView(input);
 						alert1.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-//							  String output = telnet.command(cmd.concat(input.getText().toString()));
-//							  Toast.makeText(mContext, output, Toast.LENGTH_LONG).show();
-							  Toast.makeText(mContext, cmd, Toast.LENGTH_LONG).show();
+								new Thread() { public void run() {
+									final String output = telnet.command(cmd.concat(input.getText().toString()));
+									activity.runOnUiThread(new Runnable() { public void run() {
+										Toast.makeText(mContext, output, Toast.LENGTH_LONG).show();
+									}});
+								}}.start();
 							}});
 						alert1.show();
 						break;

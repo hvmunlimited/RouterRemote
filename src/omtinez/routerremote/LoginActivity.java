@@ -45,6 +45,8 @@ public class LoginActivity extends SherlockActivity {
         pwdtext.setText(db.getPwd());
         if (!usertext.getText().equals("1234") || !pwdtext.getText().equals("1234")) {
         	rembox.setChecked(true);
+        } else {
+        	rembox.setChecked(false);
         }
         
         

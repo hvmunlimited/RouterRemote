@@ -76,15 +76,14 @@ public class Telnet {
     	StringBuffer sb = new StringBuffer();
     	try {
     		for(String x : cmd.split(";")) {
-	    		w.print(x+"\r\n");
+	    		w.print(x + "\r\n");
 	    		w.flush();
 	    		Thread.sleep(1000);
     		}
-    		for (int c=0; c != -1; c = r.read())
-    			sb.append((char)c);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+    		while (r.ready()) {
+    			sb.append((char) r.read());
+    		}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return sb.toString();
